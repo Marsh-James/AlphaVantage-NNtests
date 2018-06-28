@@ -31,45 +31,40 @@ class ScrawlerSpider(scrapy.Spider):
 
     def parse_day(self, response):
         articles = response.xpath("//div/a[starts-with(@href, \
-                              'http://www.reuters.com/article/')]")
+                              'http://UK.reuters.com/article')]")
+
         for article in articles:
+
             article_link = article.xpath("@href").extract_first()
+
             article_title = article.xpath("text()").extract_first()
+
             item = response.meta['item']
+
             item['title'] = article_title
+
 
             yield scrapy.Request(url=response.urljoin(article_link), \
                                  callback=self.parse_article, \
                                  meta={'item':item})
 
     def parse_article(self, response):
-        item = response.meta['item']
-        year = item['date'][0 : 2]
-        month = item['date'][2 : 4]
-        day = item['date'][4 : 6]
-        formatted_date = day + '-' + month + '-' + year
         atags = response.xpath('//a[contains(@href, "symbol")]/@href').extract_first()
 
-        #section = response.xpath("//div[contains(@class, 'ArticleHeader_channel')]\
-        #                         /a/text()").extract_first().replace(" ", "_")
         title = response.xpath('//title/text()').extract_first()
-        print(title + ' ' + formatted_date + ' ' + atags)
-        #texts = response.xpath("//div[contains(@class, 'StandardArticleBody')]//text()").extract()
-        #texts = [i.strip() for i in texts if len(i.strip()) > 0]
-        section = ''
-        texts = ''
+        formatted_date = response.xpath('//div[@class="date_V9eGk"]/text()').extract_first()
+        £print(title + ' ' + formatted_date + ' ' + atags)
 
-        date = item['date']
 
-        direc = date[:4]+"/"+date[4:6]+"/"
-        save_path = "./crawled/"+direc # e.g. ./crawled/2011/02
-        if not os.path.exists(save_path):
-            os.makedirs(save_path)
-        with open(os.path.join(save_path, date[-2:]+".json"), 'a') as out_file:
-            article = {
-                        'title':title, 'section':section,
-                        'date':date, 'text':texts
-                      }
-            out = json.dumps(article)
-            out_file.write(out+"\n")
+        if atags is not None:
+            save_path = "./out/"
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+            with open(os.path.join(save_path, "titles_null.json"), 'a') as out_file:
+                article = {
+                            'title': title, 'symbol': atags,
+                            'date': formatted_date
+                          }
+                out = json.dumps(article)
+                out_file.write(out+"\n")
 

@@ -53,7 +53,7 @@ class ScrawlerSpider(scrapy.Spider):
 
         title = response.xpath('//title/text()').extract_first()
         formatted_date = response.xpath('//div[@class="date_V9eGk"]/text()').extract_first()
-        £print(title + ' ' + formatted_date + ' ' + atags)
+        #print(title + ' ' + formatted_date + ' ' + atags)
 
 
         if atags is not None:

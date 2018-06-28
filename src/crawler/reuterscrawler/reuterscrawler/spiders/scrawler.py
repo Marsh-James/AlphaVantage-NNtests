@@ -60,7 +60,7 @@ class ScrawlerSpider(scrapy.Spider):
             save_path = "./out/"
             if not os.path.exists(save_path):
                 os.makedirs(save_path)
-            with open(os.path.join(save_path, "titles_null.json"), 'a') as out_file:
+            with open(os.path.join(save_path, "titles.json"), 'a') as out_file:
                 article = {
                             'title': title, 'symbol': atags,
                             'date': formatted_date

@@ -14,8 +14,8 @@ with open(os.path.join('./parsed', "titles.json"), 'r') as f:
         symbol = data['symbol']
         date = data['date']
         time = data['time']
-        market_open_time = '10:00:00' # from data point's im getting, this is the shortest time I can get. Eastern time
-        next_time_interval = '11:00:00'
+        market_open_time = '10:00:00' # From data point's im getting, this is the shortest time I can get. Eastern time
+        next_time_interval = '11:00:00' # Assuming adding 1hr tracking time
 
         historical_data, meta_data = ts.get_intraday(symbol=symbol, interval='60min', outputsize='full')
         # Dates & times do not match format but it's just a rejig

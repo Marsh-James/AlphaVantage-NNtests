@@ -6,6 +6,7 @@ __pycache__/
 # PyCharm extensions
 .DS_Store
 .idea
+src/crawler/constants.py
 
 # C extensions
 *.so

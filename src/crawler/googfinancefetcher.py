@@ -7,12 +7,14 @@ params = {
     'q': "UKX",  # Symbol
     'i': "3600",  # Interval (seconds)
     'x': "INDEXFTSE",  # Exchange
-    'p': "2d"  # Period from today (d, Y)
+    'p': "1Y"  # Period from today (d, Y)
 }
 
-historical_data = get_price_data(params)
-print(historical_data.to_json(orient='records')) # Starts furthest back works towards present
-print(historical_data)
+historical_data = get_price_data(params) # Updated local wrapper version to also return index as datetime
+json_port = historical_data.to_json(orient='index')
+
+print(json_port) # Starts furthest back works towards present (9 records in a day)
+# print(historical_data)
 '''
 with open(os.path.join('./parsed', "titles.json"), 'r') as f:
     # Each line in the titles.json file is a json object, so we just take each one and parse it independently

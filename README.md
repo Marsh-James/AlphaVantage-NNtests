@@ -4,6 +4,6 @@ primarily alpha vantage. This readme is a development log.
 
 
 30/06/2018
--Todo paralell processing on bots
+--Todo paralell processing on bots (important)
 -Filter weekends and stories after closing 
  - J

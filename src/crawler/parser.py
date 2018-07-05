@@ -1,6 +1,7 @@
 import json
 import os
 import datetime
+import src.crawler.constants as c
 # Really basic parser I scrambled out his morning over breakfast. Far from perfect, just get's the job done right now
 # Takes the json file from the crawler and formats the data to something more readable
 
@@ -70,15 +71,17 @@ def parse():
                 # print(time_hour)
                 # Filter for before market open
                 if 8 > int(time_hour) >= 0:
+                    formatted_symbol = symbol[0:symbol.find('.')]
+                    if formatted_symbol in c.SYMBOLS:
 
-                    # Dumps into file, does not regenerate file so it must be removed before each startup
-                    if not os.path.exists("./parsed/"):
-                        os.makedirs("./parsed/")
-                    with open(os.path.join("./parsed/", "titles.json"), 'a') as out_file:
-                        dump = {'title': title, 'symbol': symbol, 'date': formatted_date, 'time': time}
-                        print(dump)
-                        out = json.dumps(dump)
-                        out_file.write(out+"\n")
+                        # Dumps into file, does not regenerate file so it must be removed before each startup
+                        if not os.path.exists("./parsed/"):
+                            os.makedirs("./parsed/")
+                        with open(os.path.join("./parsed/", "titles.json"), 'a') as out_file:
+                            dump = {'title': title, 'symbol': formatted_symbol, 'date': formatted_date, 'time': time}
+                            print(dump)
+                            out = json.dumps(dump)
+                            out_file.write(out+"\n")
 
 parse()
     #{

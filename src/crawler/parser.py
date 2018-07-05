@@ -3,9 +3,12 @@ import os
 # Really basic parser I scrambled out his morning over breakfast. Far from perfect, just get's the job done right now
 # Takes the json file from the crawler and formats the data to something more readable
 
+months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+          'November', 'December']
+
 def parse():
 
-    with open(os.path.join('./reuterscrawler/reuterscrawler/spiders/out', "titles.json"), 'r') as f:
+    with open(os.path.join('./reuterscrawler/reuterscrawler/spiders/out', "titles_april_18.json"), 'r') as f:
         # Each line in the titles.json file is a json object, so we just take each one and parse it independently
         for line in f:
             data = json.loads(line)
@@ -24,17 +27,41 @@ def parse():
             # Split date and time into two entities, order of processing makes life easier by splitting things
             # Relative to '/', as seen in the example unparsed data below
             time = date[date.find('/') + 1: len(date)]
-            time = time[0 : time.find('/')]
+            time = time[0: time.find('/')]
             time = time.lstrip(' ')
             time = time.rstrip(' ')
 
-            date = date[0 : date.find('/') - 1]
+            date = date[0: date.find('/') - 1]
+
+            month = date[0:date.find(' ')]
+            date = date[date.find(' ') + 1:len(date)]
+            month = months.index(month) + 1
+            if month < 10:
+                month = '0' + str(month)
+            else:
+                month = str(month)
+
+            day = date[0:date.find(',')]
+            year = date[date.find(',') + 1:len(date)]
+
+            if int(day) < 10:
+                day = '0' + str(day)
+
+            formatted_date = year + '-' + month + '-' + day
+            formatted_date = formatted_date.lstrip(' ')
+            print(date)
+            print(formatted_date)
+            # print(year + '-' + month + '-' + day)
+            # January 31, 2018 to 2018-01-31 08:00:00
+            # time = data['time']s
+
+
 
             # Dumps into file, does not regenerate file so it must be removed before each startup
             if not os.path.exists("./parsed/"):
                 os.makedirs("./parsed/")
             with open(os.path.join("./parsed/", "titles.json"), 'a') as out_file:
-                dump = {'title': title, 'symbol': symbol, 'date': date, 'time': time}
+                dump = {'title': title, 'symbol': symbol, 'date': formatted_date, 'time': time}
                 print(dump)
                 out = json.dumps(dump)
                 out_file.write(out+"\n")

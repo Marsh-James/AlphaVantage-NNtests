@@ -22,8 +22,6 @@ def filter_parsed():
                             2) times between 12:00:00 and 08:00:00
             '''
 
-
-
             # Dumps into file, does not regenerate file so it must be removed before each startup
             if not os.path.exists("./parsed/"):
                 os.makedirs("./parsed/")

@@ -5,6 +5,7 @@ import datetime
 # Really basic parser I scrambled out his morning over breakfast. Far from perfect, just get's the job done right now
 # Takes the json file from the crawler and formats the data to something more readable
 
+
 def format_parsed():
     with open(os.path.join("./parsed/", "filtered_titles.json"), 'w') as init:
         init.write(json.dumps({}))

@@ -6,7 +6,7 @@ import datetime
 
 
 class ScrawlerSpider(scrapy.Spider):
-    name = "crawler_april"
+    name = "crawler_february"
 
     def __init__(self, *a, **kw):
         super(ScrawlerSpider, self).__init__(*a, **kw)
@@ -37,7 +37,7 @@ class ScrawlerSpider(scrapy.Spider):
         now = datetime.datetime.now()
         count = 0
         for day in days:
-            if 91 > count > now.day + 61:
+            if 150 > count > now.day + 122:
                 day_url = day.xpath('@href').extract_first()
                 date = day_url.split("/")[-1][:-5]  # e.g. 20160130
                 item = {'date': date}
@@ -72,7 +72,7 @@ class ScrawlerSpider(scrapy.Spider):
         if symbol is not None:
             if not os.path.exists("./out/"):
                 os.makedirs("./out/")
-            with open(os.path.join("./out/", "titles_april_18.json"), 'a') as out_file:
+            with open(os.path.join("./out/", "titles_february_18.json"), 'a') as out_file:
                 article = {'title': title, 'symbol': symbol, 'date': date}
                 out = json.dumps(article)
                 out_file.write(out + "\n")

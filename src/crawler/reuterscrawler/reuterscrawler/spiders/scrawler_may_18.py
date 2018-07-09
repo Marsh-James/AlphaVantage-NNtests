@@ -6,7 +6,7 @@ import datetime
 
 
 class ScrawlerSpider(scrapy.Spider):
-    name = "test"
+    name = "crawler_may"
 
     def __init__(self, *a, **kw):
         super(ScrawlerSpider, self).__init__(*a, **kw)
@@ -34,32 +34,30 @@ class ScrawlerSpider(scrapy.Spider):
     def parse_year(self, response):
         days = response.xpath("//p/a[starts-with(@href, \
                               '/resources/archive/uk/')]")
+        now = datetime.datetime.now()
+        count = 0
         for day in days:
-            day_url = day.xpath('@href').extract_first()
-            date = day_url.split("/")[-1][:-5]  # e.g. 20160130
-            item = {'date': date}
-            yield scrapy.Request(url=response.urljoin(day_url),
-                                 callback=self.parse_day, meta={'item': item})
+            if 61 > count > now.day + 30:
+                day_url = day.xpath('@href').extract_first()
+                date = day_url.split("/")[-1][:-5]  # e.g. 20160130
+                item = {'date': date}
+                yield scrapy.Request(url=response.urljoin(day_url),
+                                     callback=self.parse_day, meta={'item': item})
+            count += 1
 
     def parse_day(self, response):
         articles = response.xpath("//div/a[starts-with(@href, \
-                              'http://UK.reuters.com/article')]")
+                                  'http://UK.reuters.com/article')]")
 
-        now = datetime.datetime.now()
-        count = 0
         for article in articles:
             # Encoded from july only, need to be reset each month
-            if count > now.day + 122:
-                article_link = article.xpath("@href").extract_first()
-                article_title = article.xpath("text()").extract_first()
-                item = response.meta['item']
-                item['title'] = article_title
-
-                yield scrapy.Request(url=response.urljoin(article_link),
-                                     callback=self.parse_article,
-                                     meta={'item': item})
-            count += 1
-
+            article_link = article.xpath("@href").extract_first()
+            article_title = article.xpath("text()").extract_first()
+            item = response.meta['item']
+            item['title'] = article_title
+            yield scrapy.Request(url=response.urljoin(article_link),
+                                 callback=self.parse_article,
+                                 meta={'item': item})
 
     def parse_article(self, response):
 
@@ -73,7 +71,7 @@ class ScrawlerSpider(scrapy.Spider):
         if symbol is not None:
             if not os.path.exists("./out/"):
                 os.makedirs("./out/")
-            with open(os.path.join("./out/", "titles_february_18.json"), 'a') as out_file:
+            with open(os.path.join("./out/", "titles_may_18.json"), 'a') as out_file:
                 article = {'title': title, 'symbol': symbol, 'date': date}
                 out = json.dumps(article)
                 out_file.write(out + "\n")

@@ -106,3 +106,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Firebase API Key
+src/crawler/firebase_key.json

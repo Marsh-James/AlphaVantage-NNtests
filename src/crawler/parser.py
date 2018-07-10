@@ -11,7 +11,7 @@ months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Augus
 
 def parse():
 
-    with open(os.path.join('./reuterscrawler/reuterscrawler/spiders/out', "titles_june_18.json"), 'r') as f:
+    with open(os.path.join('./reuterscrawler/reuterscrawler/spiders/out', "titles_april_18.json"), 'r') as f:
         # Each line in the titles.json file is a json object, so we just take each one and parse it independently
         for line in f:
             data = json.loads(line)
@@ -22,10 +22,10 @@ def parse():
                 # Strip out leading blanks and new line tags
                 title = title.lstrip('\n')
                 title = title.lstrip(' ')
-                title = title.rstrip('| Reuters')
+                title = title.replace(' | Reuters', '')
 
                 # Symbols are always found in front of the equals sign in the html data
-                symbol = symbol[symbol.find('=') + 1 : len(symbol)]
+                symbol = symbol[symbol.find('=') + 1: len(symbol)]
 
                 # Split date and time into two entities, order of processing makes life easier by splitting things
                 # Relative to '/', as seen in the example unparsed data below

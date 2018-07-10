@@ -14,9 +14,8 @@ def fetch():
         init.write(json.dumps({}))
 
     data = json.load(open('./parsed/filtered_titles.json'))
-
+    count = 0
     for majorkey, subdict in data.items():
-
         title = majorkey
         symbol = subdict['symbol']
         date = subdict['date']
@@ -50,11 +49,13 @@ def fetch():
                     new_obj = json.loads(output.read())
                     new_obj[title] = result
                     output.seek(0)
-                    print(new_obj)
+                    # print(new_obj)
+                    print(count)
                     json.dump(new_obj, output)
                 db.reference('/').update({
                     title: result
                 })
+                count += 1
         except:
             print('Oops, something went wrong!')
 

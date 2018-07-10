@@ -17,6 +17,7 @@ def format_parsed():
             count += 1
             data = json.loads(line)
             title = data['title']
+            title = str(title).lower()
             symbol = data['symbol']
             date = data['date']
             time = data['time']
@@ -34,5 +35,6 @@ def format_parsed():
                 print(count)
                 output.seek(0)
                 json.dump(new_obj, output)
+
 
 format_parsed()

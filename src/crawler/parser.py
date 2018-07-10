@@ -11,7 +11,7 @@ months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Augus
 
 def parse():
 
-    with open(os.path.join('./reuterscrawler/reuterscrawler/spiders/out', "titles_january_18.json"), 'r') as f:
+    with open(os.path.join('./reuterscrawler/reuterscrawler/spiders/out', "titles_june_18.json"), 'r') as f:
         # Each line in the titles.json file is a json object, so we just take each one and parse it independently
         for line in f:
             data = json.loads(line)

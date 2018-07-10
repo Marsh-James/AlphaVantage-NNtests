@@ -6,6 +6,8 @@ __pycache__/
 # PyCharm extensions
 .DS_Store
 .idea
+src/crawler/reuterscrawler/reuterscrawler/spiders/out/
+src/crawler/parsed/
 
 # C extensions
 *.so

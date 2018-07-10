@@ -33,13 +33,13 @@ def fetch():
             json_port = json.loads(historical_data.to_json(orient='index'))
 
             market_open_time = '09:00:00'  # From data point's im getting, this is the shortest time I can get. UTC
-            next_time_interval = '10:00:00'  # Assuming adding 1hr tracking time
 
             # Time key to verify day open existence
             time_key = str(date) + ' ' + str(market_open_time)
             if time_key in json_port:
 
-                if int(json_port[date + ' ' + next_time_interval]['Close']) > int(json_port[date + ' ' + market_open_time]['Open']) * 1.03:
+                if int(json_port[date + ' ' + market_open_time]['Close']) >= int(json_port[date + ' ' + market_open_time]['Open']) * 1.03\
+                        or (json_port[date + ' ' + market_open_time]['Close']) <= int(json_port[date + ' ' + market_open_time]['Open']) * 0.97:
                     result = 1
                 else:
                     result = 0
